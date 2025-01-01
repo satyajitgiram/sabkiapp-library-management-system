@@ -1,0 +1,282 @@
+{
+	"info": {
+		"_postman_id": "e5c24e8a-3b52-4c0e-8f3d-9a7b3f5d0e1c",
+		"name": "Library Management System API",
+		"description": "# Library Management System API Documentation\n\nThis API provides endpoints for managing a library system, including books, members, and borrowing operations.\n\n## Authentication\nAll endpoints require API key authentication. Add your API key to the request headers:\n```\nX-API-Key: your_api_key_here\n```\n\n## Response Codes\n- 200: Success\n- 201: Created\n- 400: Bad Request\n- 401: Unauthorized\n- 403: Forbidden\n- 404: Not Found\n- 500: Internal Server Error\n\n## Pagination\nAll list endpoints support pagination with the following parameters:\n- `page`: Page number (default: 1)\n- `page_size`: Number of items per page (default: 10, max: 100)\n\nExample pagination response:\n```json\n{\n    \"count\": 100,\n    \"next\": \"http://api.example.com/api/books/?page=2\",\n    \"previous\": null,\n    \"results\": []\n}\n```\n\n## Filtering\nEndpoints support various filtering options through query parameters. See individual endpoint documentation for specific filters.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Books",
+			"description": "Endpoints for managing books in the library system",
+			"item": [
+				{
+					"name": "List Books (Basic)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/books/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "books"]
+						},
+						"description": "Get a simple list of books with default pagination (10 items per page).\n\n### Response Format\n```json\n{\n    \"count\": 30,\n    \"next\": \"http://api.example.com/api/books/?page=2\",\n    \"previous\": null,\n    \"results\": [\n        {\n            \"id\": 1,\n            \"title\": \"Python Programming\",\n            \"author\": \"John Doe\",\n            \"published_date\": \"2023-01-01\",\n            \"category\": \"Programming\",\n            \"available_copies\": 5\n        }\n    ]\n}\n```"
+					}
+				},
+				{
+					"name": "List Books (With Pagination)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/books/?page=2&page_size=5",
+							"host": ["{{base_url}}"],
+							"path": ["api", "books"],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"description": "Page number"
+								},
+								{
+									"key": "page_size",
+									"value": "5",
+									"description": "Number of items per page"
+								}
+							]
+						},
+						"description": "Get a paginated list of books with custom page size.\n\n### Query Parameters\n| Parameter | Type | Description |\n|-----------|------|-------------|\n| page | integer | Page number (default: 1) |\n| page_size | integer | Items per page (default: 10, max: 100) |\n\n### Response Format\n```json\n{\n    \"count\": 30,\n    \"next\": \"http://api.example.com/api/books/?page=3&page_size=5\",\n    \"previous\": \"http://api.example.com/api/books/?page=1&page_size=5\",\n    \"results\": [\n        {\n            \"id\": 6,\n            \"title\": \"Data Science Basics\",\n            \"author\": \"Jane Smith\",\n            \"published_date\": \"2023-02-01\",\n            \"category\": \"Data Science\",\n            \"available_copies\": 3\n        }\n    ]\n}\n```"
+					}
+				},
+				{
+					"name": "List Books (With Filters)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/books/?title=python&author=john&category=programming",
+							"host": ["{{base_url}}"],
+							"path": ["api", "books"],
+							"query": [
+								{
+									"key": "title",
+									"value": "python",
+									"description": "Filter by title (case-insensitive, partial match)"
+								},
+								{
+									"key": "author",
+									"value": "john",
+									"description": "Filter by author (case-insensitive, partial match)"
+								},
+								{
+									"key": "category",
+									"value": "programming",
+									"description": "Filter by exact category match"
+								}
+							]
+						},
+						"description": "Get a filtered list of books.\n\n### Filter Parameters\n| Parameter | Type | Description | Example |\n|-----------|------|-------------|----------|\n| title | string | Case-insensitive partial match | python |\n| author | string | Case-insensitive partial match | john |\n| category | string | Exact match | programming |\n\n### Response Format\n```json\n{\n    \"count\": 2,\n    \"next\": null,\n    \"previous\": null,\n    \"results\": [\n        {\n            \"id\": 1,\n            \"title\": \"Python Programming\",\n            \"author\": \"John Doe\",\n            \"published_date\": \"2023-01-01\",\n            \"category\": \"Programming\",\n            \"available_copies\": 5\n        }\n    ]\n}\n```"
+					}
+				},
+				{
+					"name": "List Books (Combined Features)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/books/?title=python&category=programming&page=1&page_size=5",
+							"host": ["{{base_url}}"],
+							"path": ["api", "books"],
+							"query": [
+								{
+									"key": "title",
+									"value": "python",
+									"description": "Filter by title"
+								},
+								{
+									"key": "category",
+									"value": "programming",
+									"description": "Filter by category"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number"
+								},
+								{
+									"key": "page_size",
+									"value": "5",
+									"description": "Items per page"
+								}
+							]
+						},
+						"description": "Example combining pagination and filtering.\n\n### Combined Parameters\n| Parameter | Type | Description |\n|-----------|------|-------------|\n| title | string | Filter by title |\n| category | string | Filter by category |\n| page | integer | Page number |\n| page_size | integer | Items per page |\n\n### Response Format\n```json\n{\n    \"count\": 8,\n    \"next\": \"http://api.example.com/api/books/?title=python&category=programming&page=2&page_size=5\",\n    \"previous\": null,\n    \"results\": [\n        {\n            \"id\": 1,\n            \"title\": \"Python Programming\",\n            \"author\": \"John Doe\",\n            \"published_date\": \"2023-01-01\",\n            \"category\": \"Programming\",\n            \"available_copies\": 5\n        }\n    ]\n}\n```"
+					}
+				},
+				{
+					"name": "Add Book",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Python Programming\",\n    \"author\": \"John Doe\",\n    \"published_date\": \"2023-01-01\",\n    \"category\": \"Programming\",\n    \"available_copies\": 5\n}",
+							"description": "Book details in JSON format"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/books/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "books"]
+						},
+						"description": "Add a new book to the library system.\n\n### Request Body\n```json\n{\n    \"title\": \"string (required)\",\n    \"author\": \"string (required)\",\n    \"published_date\": \"YYYY-MM-DD (required)\",\n    \"category\": \"string (required)\",\n    \"available_copies\": \"integer (required, min: 0)\"\n}\n```\n\n### Response Format\n```json\n{\n    \"id\": 1,\n    \"title\": \"Python Programming\",\n    \"author\": \"John Doe\",\n    \"published_date\": \"2023-01-01\",\n    \"category\": \"Programming\",\n    \"available_copies\": 5\n}\n```"
+					}
+				}
+			]
+		},
+		{
+			"name": "Members",
+			"description": "Endpoints for managing library members",
+			"item": [
+				{
+					"name": "List Members (Basic)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/members/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "members"]
+						},
+						"description": "Get a simple list of members with default pagination.\n\n### Response Format\n```json\n{\n    \"count\": 20,\n    \"next\": \"http://api.example.com/api/members/?page=2\",\n    \"previous\": null,\n    \"results\": [\n        {\n            \"id\": 1,\n            \"name\": \"Jane Smith\",\n            \"email\": \"jane@example.com\",\n            \"membership_date\": \"2023-01-01\",\n            \"membership_status\": \"Active\"\n        }\n    ]\n}\n```"
+					}
+				},
+				{
+					"name": "List Members (With Pagination)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/members/?page=2&page_size=5",
+							"host": ["{{base_url}}"],
+							"path": ["api", "members"],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"description": "Page number"
+								},
+								{
+									"key": "page_size",
+									"value": "5",
+									"description": "Items per page"
+								}
+							]
+						},
+						"description": "Get a paginated list of members.\n\n### Query Parameters\n| Parameter | Type | Description |\n|-----------|------|-------------|\n| page | integer | Page number (default: 1) |\n| page_size | integer | Items per page (default: 10, max: 100) |"
+					}
+				},
+				{
+					"name": "Register Member",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Jane Smith\",\n    \"email\": \"jane@example.com\",\n    \"membership_date\": \"2023-01-01\",\n    \"membership_status\": \"Active\"\n}",
+							"description": "Member details in JSON format"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/members/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "members"]
+						},
+						"description": "Register a new library member.\n\n### Request Body\n```json\n{\n    \"name\": \"string (required)\",\n    \"email\": \"valid email (required, unique)\",\n    \"membership_date\": \"YYYY-MM-DD (required)\",\n    \"membership_status\": \"string (required, choices: Active, Inactive)\"\n}\n```"
+					}
+				}
+			]
+		},
+		{
+			"name": "Borrowing",
+			"description": "Endpoints for managing book borrowing operations",
+			"item": [
+				{
+					"name": "List Borrow Records (Basic)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/borrow-records/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "borrow-records"]
+						},
+						"description": "Get a list of all borrowing records with default pagination.\n\n### Response Format\n```json\n{\n    \"count\": 25,\n    \"next\": \"http://api.example.com/api/borrow-records/?page=2\",\n    \"previous\": null,\n    \"results\": [\n        {\n            \"id\": 1,\n            \"member\": 1,\n            \"book\": 1,\n            \"book_title\": \"Python Programming\",\n            \"member_name\": \"Jane Smith\",\n            \"borrow_date\": \"2023-01-01\",\n            \"return_date\": null\n        }\n    ]\n}\n```"
+					}
+				},
+				{
+					"name": "Borrow Book",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"book_id\": 1,\n    \"member_id\": 1\n}",
+							"description": "Borrowing details in JSON format"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/borrow-records/borrow_book/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "borrow-records", "borrow_book"]
+						},
+						"description": "Create a new borrowing record for a book.\n\n### Request Body\n```json\n{\n    \"book_id\": \"integer (required)\",\n    \"member_id\": \"integer (required)\"\n}\n```"
+					}
+				},
+				{
+					"name": "Return Book",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"borrow_record_id\": 1\n}",
+							"description": "Return details in JSON format"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/borrow-records/return_book/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "borrow-records", "return_book"]
+						},
+						"description": "Return a borrowed book.\n\n### Request Body\n```json\n{\n    \"borrow_record_id\": \"integer (required)\"\n}\n```"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string",
+			"description": "Base URL for the API"
+		}
+	]
+}
