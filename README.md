@@ -71,6 +71,62 @@ This will create:
 - `GET /api/borrow-records/`: List all borrowing records
   - Pagination enabled
 
+## API Documentation
+
+### Postman Collection
+
+You can access the API documentation and test the endpoints using our Postman collection in two ways:
+
+1. **Direct Import Link**:
+   - Click [here](https://elements.getpostman.com/redirect?entityId=29249303-78999036-dc14-4b43-ab64-374d016da833&entityType=collection) to access the collection
+   - Click "Fork" to add it to your workspace
+   - Start testing the APIs!
+
+2. **Manual Import**:
+   - Download the `postman_collection.json` from this repository
+   - Open Postman
+   - Click "Import" -> "File" -> Select the downloaded JSON
+   - The collection will be added to your workspace
+
+The collection includes examples and documentation for all endpoints:
+- Book Management (CRUD operations)
+- Member Management
+- Borrow/Return Operations
+- Filtering and Search examples
+
+## Deployment on Vercel
+
+### Prerequisites
+1. A Vercel account
+2. A PostgreSQL database (You can use Vercel Postgres or any other provider)
+3. Your project pushed to a GitHub repository
+
+### Steps to Deploy
+
+1. **Prepare Your Repository**
+   - Push your code to GitHub
+   - Make sure all requirements are in `requirements.txt`
+   - Ensure `vercel.json` is present in the root directory
+
+2. **Deploy on Vercel**
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Click "Add New" -> "Project"
+   - Import your GitHub repository
+   - Configure the following environment variables:
+     ```
+     DATABASE_URL=your_db_url
+     DEBUG=False
+     SECRET_KEY=your_secret_key
+     ```
+   - Click "Deploy"
+
+3. **Post-Deployment**
+   - Once deployed, go to your project settings
+   - Note down your production URL
+   - Update your frontend API endpoints if necessary
+
+Your API will be available at: `https://your-project-name.vercel.app/api/`
+
 ## Logging
 
 The application uses Django's logging framework to track important events and errors. Logs are stored in two locations:
