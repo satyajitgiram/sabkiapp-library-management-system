@@ -1,7 +1,8 @@
+psycopg2-binary
 Django
 djangorestframework
-psycopg2-binary
 django-filter
 python-dotenv
 Faker
 gunicorn
+django-cors-headers
