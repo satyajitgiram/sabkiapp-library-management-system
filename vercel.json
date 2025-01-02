@@ -17,8 +17,12 @@
       }],
     "routes": [
         {
+            "src": "/static/(.*)",
+            "dest": "/static/$1"
+          },
+          {
             "src": "/(.*)",
-            "dest": "library_management/wsgi.py"
-        }
+            "dest": "configs/wsgi.py"
+          }
     ]
 }
