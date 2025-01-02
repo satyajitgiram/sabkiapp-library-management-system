@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'library_management.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 tmpPostgres = urlparse(getenv("DATABASE_URL"))
-                                                                                                                                                                                                                                                                                                                                                                                                                        
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -135,10 +135,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
-# Create directories if they don't exist
-os.makedirs(STATIC_ROOT, exist_ok=True)
-os.makedirs(os.path.join(BASE_DIR, 'static'), exist_ok=True)
 
 # Media files
 MEDIA_URL = '/media/'
