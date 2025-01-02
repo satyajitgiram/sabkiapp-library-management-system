@@ -2,9 +2,13 @@
 
 echo "Running Build Script..."
 
-
+# Install python dependencies
 pip install -r requirements.txt
-python3 manage.py collectstatic --noinput
 
+# Create static directory if it doesn't exist
+mkdir -p staticfiles/static
 
-echo "Build Script Completed!"
+# Run collectstatic
+python manage.py collectstatic --noinput
+
+echo "Build completed successfully!"
