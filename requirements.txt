@@ -6,3 +6,4 @@ python-dotenv
 Faker
 gunicorn
 django-cors-headers
+whitenoise
